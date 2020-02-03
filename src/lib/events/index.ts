@@ -11,10 +11,5 @@
 // under the License.
 
 
-import * as Types from "./lib/Types";
-export { Types };
-export * from "./lib/enemies";
-export * from "./lib/turrets";
-export * from "./lib/events";
-export { Engine } from "./lib/Engine";
-export { GameConstants } from "./lib/GameConstants";
+export { Event } from "./Event";
+export { EventDispatcher } from "./EventDispatcher";

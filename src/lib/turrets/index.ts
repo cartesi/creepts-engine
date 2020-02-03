@@ -11,10 +11,13 @@
 // under the License.
 
 
-import * as Types from "./lib/Types";
-export { Types };
-export * from "./lib/enemies";
-export * from "./lib/turrets";
-export * from "./lib/events";
-export { Engine } from "./lib/Engine";
-export { GameConstants } from "./lib/GameConstants";
+export { Bullet } from "./Bullet";
+export { Glue } from "./Glue";
+export { GlueBullet } from "./GlueBullet";
+export { GlueTurret } from "./GlueTurret";
+export { LaserTurret } from "./LaserTurret";
+export { LaunchTurret } from "./LaunchTurret";
+export { Mine } from "./Mine";
+export { Mortar } from "./Mortar";
+export { ProjectileTurret } from "./ProjectileTurret";
+export { Turret } from "./Turret";
