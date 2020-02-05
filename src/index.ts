@@ -17,4 +17,5 @@ export * from "./lib/enemies";
 export * from "./lib/turrets";
 export * from "./lib/events";
 export { Engine } from "./lib/Engine";
+export { EngineRunner, ProgressInformation } from "./lib/EngineRunner";
 export { GameConstants } from "./lib/GameConstants";

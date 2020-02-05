@@ -18,6 +18,13 @@ export type Callback = {
     scope: any
 };
 
+export type MapObject = {
+    name: string,
+    size: { r: number, c: number },
+    path: { r: number, c: number }[],
+    plateaus: { r: number, c: number }[]
+};
+
 export type GameConfig = {
     timeStep: number;
     runningInClientSide: boolean;
@@ -37,4 +44,50 @@ export type EngineReturn = {
     success: boolean;
     turret?: Turret;
     error?: { type: string, info?: any };
+};
+
+export type Action = {
+    type: string,
+    tick: number,
+    turretType?: string,
+    id?: number,
+    position?: { r: number, c: number }
+};
+
+export type EnemyNames = "soldier" | "runner" | "healer" | "blob" | "flier";
+export type EnemyAttributes = {
+    life: number,
+    speed: number,
+    value: number
+};
+
+export type TurretNames = "projectile" | "laser" | "launch" | "glue";
+export type TurretAttributes = {
+    price: number
+}
+
+export type WaveAttributes = {
+    waveReward: number,
+    extend: number,
+    maxExtend: number,
+    enemies: { type: string, t: number }[]
+}
+
+export type LevelObject = {
+    engineVersion: string,
+    gameConfig: GameConfig,
+    enemiesData: Record<EnemyNames, EnemyAttributes>,
+    turretsData: Record<TurretNames, TurretAttributes>,
+    wavesData: WaveAttributes[]
+};
+
+export type LogsObject = {
+    actions: Action[]
+};
+
+export type GameData = {
+    soundMuted: boolean,
+    musicMuted: boolean,
+    scores: number[],
+    currentMapIndex: number
 };

@@ -5,7 +5,7 @@
         "node": true
     },
     "extends": [
-        "google"
+        "eslint:recommended"
     ],
     "globals": {
         "Atomics": "readonly",

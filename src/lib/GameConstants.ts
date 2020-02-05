@@ -34,6 +34,7 @@ export class GameConstants {
     public static readonly TURRET_LAUNCH = "launch";
     public static readonly TURRET_GLUE = "glue";
 
+    // turret attributes
     public static readonly ATTRIBUTE_DAMAGE = "damage";
     public static readonly ATTRIBUTE_RELOAD = "reload";
     public static readonly ATTRIBUTE_RANGE = "range";
@@ -43,6 +44,15 @@ export class GameConstants {
     public static readonly ATTRIBUTE_PRICE_IMPROVEMENT = "priceImprovement";
     public static readonly ATTRIBUTE_PRICE_UPGRADE = "priceUpgrade";
     public static readonly ATTRIBUTE_TELEPORT_DISTANCE = "teleportDistance";
+
+    // action types
+    public static readonly ACTION_TYPE_NEXT_WAVE = "next wave";
+    public static readonly ACTION_TYPE_ADD_TURRET = "add turret";
+    public static readonly ACTION_TYPE_SELL_TURRET = "sell turret";
+    public static readonly ACTION_TYPE_UPGRADE_TURRET = "upgrade turret";
+    public static readonly ACTION_TYPE_LEVEL_UP_TURRET = "level up turret";
+    public static readonly ACTION_TYPE_CHANGE_STRATEGY_TURRET = "change strategy turret";
+    public static readonly ACTION_TYPE_CHANGE_FIXED_TARGET_TURRET = "change fixed target turret";
 
     // shooting strategy
     public static readonly STRATEGY_SHOOT_FIRST = "first";

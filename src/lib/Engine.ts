@@ -14,7 +14,17 @@
 import { GameConstants } from "./GameConstants";
 import { MathUtils } from "./utils/MathUtils";
 import { Enemy } from "./enemies";
-import { Bullet, Glue, GlueBullet, GlueTurret, LaserTurret, LaunchTurret, Mine, Mortar, ProjectileTurret, Turret } from "./turrets";
+import { 
+    Bullet,
+    Glue,
+    GlueBullet,
+    GlueTurret,
+    LaserTurret,
+    LaunchTurret,
+    Mine,
+    Mortar,
+    ProjectileTurret,
+    Turret } from "./turrets";
 import { EnemiesSpawner } from "./EnemiesSpawner"
 import { Event, EventDispatcher } from "./events";
 import * as Types from "./Types";
@@ -25,10 +35,10 @@ export class Engine {
     public turrets: Turret[];
     public enemySpawningDeltaTicks: number;
     public lastWaveTick: number;
-    public enemyData: any;
-    public turretData: any;
+    public enemyData: Record<string, Types.EnemyAttributes>;
+    public turretData: Record<string, Types.TurretAttributes>;
     public turretsAttributes: any;
-    public wavesData: any;
+    public wavesData: Types.WaveAttributes[];
     public waveEnemies: any;
     public waveReward: number;
     public remainingReward: number;
@@ -78,7 +88,7 @@ export class Engine {
     private allEnemiesSpawned: boolean;
     private canLaunchNextWave: boolean;
 
-    constructor(gameConfig: Types.GameConfig, enemyData: any, turretData: any, wavesData: any) {
+    constructor(gameConfig: Types.GameConfig, enemyData: Record<string, Types.EnemyAttributes>, turretData: Record<string, Types.TurretAttributes>, wavesData: Types.WaveAttributes[]) {
 
         this._version = GameConstants.VERSION;
 
@@ -244,8 +254,8 @@ export class Engine {
         this._noEnemiesOnStage = false;
         this.allEnemiesSpawned = false;
 
-        let length = Object.keys(this.wavesData).length;
-        let waveData = this.wavesData["wave_" + (this._round % length + 1)];
+        let length = this.wavesData.length;
+        let waveData = this.wavesData[this._round % length];
 
         let initialWaveEnemies = waveData.enemies.slice(0);
 
@@ -1006,85 +1016,83 @@ export class Engine {
     private generateTurretsAttributes(): void {
 
         this.turretsAttributes = {};
+        for (let turretType in this.turretData) {
 
-        let keys = Object.keys(this.turretData);
-        for (let i = 0; i < keys.length; i++) {
+            this.turretsAttributes[turretType] = [{}, {}, {}];
 
-            this.turretsAttributes[keys[i]] = [{}, {}, {}];
+            if (turretType === GameConstants.TURRET_PROJECTILE) {
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_DAMAGE, 100, 140, "prev + (prev - pprev) + (i + 2) * 2", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RELOAD, 1, .95, "prev - .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.55, "prev + .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 50, 60, "prev + (i + 4) * 2", 10);
+                this.turretsAttributes[turretType][0].priceUpgrade = 5600;
 
-            if (keys[i] === GameConstants.TURRET_PROJECTILE) {
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_DAMAGE, 100, 140, "prev + (prev - pprev) + (i + 2) * 2", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RELOAD, 1, .95, "prev - .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.55, "prev + .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 50, 60, "prev + (i + 4) * 2", 10);
-                this.turretsAttributes[keys[i]][0].priceUpgrade = 5600;
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_DAMAGE, 3400, 3560, "prev + (prev - pprev) + 64 + (i - 2) * 26", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RELOAD, .55, .5, "prev - .05", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 470, 658, "prev + (prev - pprev) + 75 + (i - 2) * 31", 10);
+                this.turretsAttributes[turretType][1].priceUpgrade = 88500;
 
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_DAMAGE, 3400, 3560, "prev + (prev - pprev) + 64 + (i - 2) * 26", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RELOAD, .55, .5, "prev - .05", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 470, 658, "prev + (prev - pprev) + 75 + (i - 2) * 31", 10);
-                this.turretsAttributes[keys[i]][1].priceUpgrade = 88500;
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_DAMAGE, 20000, 20100, "prev + (i * 100)", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RELOAD, .2, .19, "prev - .01", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RANGE, 3.5, 3.55, "prev + .05", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 750, 1125, "prev + (prev - pprev) + 188 + (i - 2) * 92", 15);
+            } else if (turretType === GameConstants.TURRET_LAUNCH) {
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_DAMAGE, 100, 160, "prev + (prev - pprev) + (i + 4) * 2", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 1.5, 1.55, "prev + .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RELOAD, 2, 1.95, "prev - .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.55, "prev + .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 125, 150, "prev + (prev - pprev) + (i + 3)", 10);
+                this.turretsAttributes[turretType][0].priceUpgrade = 10000;
 
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_DAMAGE, 20000, 20100, "prev + (i * 100)", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RELOAD, .2, .19, "prev - .01", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RANGE, 3.5, 3.55, "prev + .05", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 750, 1125, "prev + (prev - pprev) + 188 + (i - 2) * 92", 15);
-            } else if (keys[i] === GameConstants.TURRET_LAUNCH) {
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_DAMAGE, 100, 160, "prev + (prev - pprev) + (i + 4) * 2", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 1.5, 1.55, "prev + .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RELOAD, 2, 1.95, "prev - .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.55, "prev + .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 125, 150, "prev + (prev - pprev) + (i + 3)", 10);
-                this.turretsAttributes[keys[i]][0].priceUpgrade = 10000;
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_DAMAGE, 3287, 3744, "prev + (prev - pprev) + 150 + (i - 2) * 3", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 2, 2.05, "prev + .05", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RELOAD, 2.55, 2.5, "prev - .05", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.5, "prev", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 750, 1050, "prev + (prev - pprev) + 120 + (i - 2) * 48", 10);
+                this.turretsAttributes[turretType][1].priceUpgrade = 103000;
 
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_DAMAGE, 3287, 3744, "prev + (prev - pprev) + 150 + (i - 2) * 3", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 2, 2.05, "prev + .05", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RELOAD, 2.55, 2.5, "prev - .05", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.5, "prev", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 750, 1050, "prev + (prev - pprev) + 120 + (i - 2) * 48", 10);
-                this.turretsAttributes[keys[i]][1].priceUpgrade = 103000;
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_DAMAGE, 48000, 48333, "prev + (prev - pprev) + 34", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 1.75, 1.8, "prev + .05", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RELOAD, 3, 2.95, "prev - .05", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RANGE, 3, 3.1, "prev + .1", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 950, 1425, "prev + (prev - pprev) + 238 + (i - 2) * 117", 15);
+            } else if (turretType === GameConstants.TURRET_LASER) {
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_DAMAGE, 230, 270, "prev + (prev - pprev) + (i + 2) * 2", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RELOAD, 1.5, 1.4, "prev - .1", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 50, 60, "prev + (i + 4) * 2", 10);
+                this.turretsAttributes[turretType][0].priceUpgrade = 7000;
 
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_DAMAGE, 48000, 48333, "prev + (prev - pprev) + 34", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_EXPLOSION_RANGE, 1.75, 1.8, "prev + .05", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RELOAD, 3, 2.95, "prev - .05", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RANGE, 3, 3.1, "prev + .1", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 950, 1425, "prev + (prev - pprev) + 238 + (i - 2) * 117", 15);
-            } else if (keys[i] === GameConstants.TURRET_LASER) {
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_DAMAGE, 230, 270, "prev + (prev - pprev) + (i + 2) * 2", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RELOAD, 1.5, 1.4, "prev - .1", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 50, 60, "prev + (i + 4) * 2", 10);
-                this.turretsAttributes[keys[i]][0].priceUpgrade = 7000;
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_DAMAGE, 4300, 4460, "prev + (prev - pprev) + 64 + (i - 2) * 26", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RELOAD, 1.5, 1.4, "prev - .1", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 580, 812, "prev + (prev - pprev) + 93 + (i - 2) * 37", 10);
+                this.turretsAttributes[turretType][1].priceUpgrade = 96400;
 
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_DAMAGE, 4300, 4460, "prev + (prev - pprev) + 64 + (i - 2) * 26", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RELOAD, 1.5, 1.4, "prev - .1", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RANGE, 3, 3.05, "prev + .05", 10);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 580, 812, "prev + (prev - pprev) + 93 + (i - 2) * 37", 10);
-                this.turretsAttributes[keys[i]][1].priceUpgrade = 96400;
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_DAMAGE, 44000, 44333, "prev + (prev - pprev) + 34", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RELOAD, 3, 2.95, "prev - .05", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RANGE, 3.05, 3.1, "prev + .05", 15);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 839, 1203, "prev + (prev - pprev) + 239 + (i - 2) * 115", 15);
+            } else if (turretType === GameConstants.TURRET_GLUE) {
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_INTENSITY, 1.2, 1.4, "prev + .2", 5);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_DURATION, 1.5, 1.5, "prev", 5);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RELOAD, 2, 2, "prev", 5);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_RANGE, 1.5, 1.6, "prev + .1", 5);
+                this.setAttributes(turretType, 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 100, 120, "prev + (prev - pprev) + 4 + (i - 2)", 5);
+                this.turretsAttributes[turretType][0].priceUpgrade = 800;
 
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_DAMAGE, 44000, 44333, "prev + (prev - pprev) + 34", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RELOAD, 3, 2.95, "prev - .05", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RANGE, 3.05, 3.1, "prev + .05", 15);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 839, 1203, "prev + (prev - pprev) + 239 + (i - 2) * 115", 15);
-            } else {
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_INTENSITY, 1.2, 1.4, "prev + .2", 5);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_DURATION, 1.5, 1.5, "prev", 5);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RELOAD, 2, 2, "prev", 5);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_RANGE, 1.5, 1.6, "prev + .1", 5);
-                this.setAttributes(keys[i], 1, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 100, 120, "prev + (prev - pprev) + 4 + (i - 2)", 5);
-                this.turretsAttributes[keys[i]][0].priceUpgrade = 800;
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_INTENSITY, 1.2, 1.5, "prev + 5", 5);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_DURATION, 2.5, 2.5, "prev", 5);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RELOAD, 3, 3, "prev", 5);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.7, "prev + .2", 5);
+                this.setAttributes(turretType, 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 200, 240, "prev + (prev - pprev) + (i + 2) * 2", 5);
+                this.turretsAttributes[turretType][1].priceUpgrade = 1700;
 
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_INTENSITY, 1.2, 1.5, "prev + 5", 5);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_DURATION, 2.5, 2.5, "prev", 5);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RELOAD, 3, 3, "prev", 5);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_RANGE, 2.5, 2.7, "prev + .2", 5);
-                this.setAttributes(keys[i], 2, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 200, 240, "prev + (prev - pprev) + (i + 2) * 2", 5);
-                this.turretsAttributes[keys[i]][1].priceUpgrade = 1700;
-
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_TELEPORT_DISTANCE, 15, 20, "prev + 5", 5);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RELOAD, 5, 4.5, "prev - .5", 5);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_RANGE, 3.5, 3.5, "prev", 5);
-                this.setAttributes(keys[i], 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 2000, 2400, "prev + (prev - pprev) + (i + 2) * 20", 5);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_TELEPORT_DISTANCE, 15, 20, "prev + 5", 5);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RELOAD, 5, 4.5, "prev - .5", 5);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_RANGE, 3.5, 3.5, "prev", 5);
+                this.setAttributes(turretType, 3, GameConstants.ATTRIBUTE_PRICE_IMPROVEMENT, 2000, 2400, "prev + (prev - pprev) + (i + 2) * 20", 5);
             }
         }
     }
