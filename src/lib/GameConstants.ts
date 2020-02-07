@@ -20,6 +20,9 @@ export class GameConstants {
     public static readonly BULLET_SPEED = .85; // in cells / tick
     public static readonly MORTAR_SPEED = .45;
     public static readonly INITIAL_TICKS_WAVE = 4;
+    public static readonly ENEMY_SPAWNING_DELTA_TICKS = 10;
+    public static readonly INITIAL_CREDITS = 500;
+    public static readonly INITIAL_LIFES = 20;
 
     // enemies names
     public static readonly ENEMY_SOLDIER = "soldier";
