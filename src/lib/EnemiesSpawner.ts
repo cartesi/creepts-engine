@@ -55,7 +55,6 @@ export class EnemiesSpawner {
                     default:
                 }
 
-                // cada ronda que pasa los enemigos tienen mas vida y mas valor
                 enemy.life = Math.round(enemy.life * this.engine.enemyHealthModifier);
                 enemy.maxLife = enemy.life;
                 enemy.value = Math.round(enemy.value * this.engine.enemyRewardModifier);

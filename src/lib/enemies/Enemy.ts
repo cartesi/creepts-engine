@@ -111,7 +111,7 @@ export class Enemy {
     }
 
     public destroy(): void {
-        // de momento nada
+        // do nothing
     }
 
     public update(): void {
@@ -128,7 +128,7 @@ export class Enemy {
 
         let speed = this.speed;
 
-        // si esta encima de pegamento hacer que vaya mas lento
+        // if on top of glue, make it slower
         if (this.affectedByGlue) {
 
             speed = MathUtils.fixNumber(this.speed / this.glueIntensity);
@@ -229,16 +229,12 @@ export class Enemy {
         this.life -= MathUtils.fixNumber(damage * modifier);
 
         if (bullet && bullet.turret) {
-            // console.log("BULLET " + bullet.turret.id + ": " + Math.round(damage) + " " + GameVars.ticksCounter);
             bullet.turret.inflicted += Math.round(damage);
         } else if (mortar && mortar.turret) {
-            // console.log("MORTAR " + mortar.turret.id + ": " + Math.round(damage) + " " + GameVars.ticksCounter);
             mortar.turret.inflicted += Math.round(damage);
         } else if (mine && mine.turret) {
-            // console.log("MINE " + mine.turret.id + ": " + Math.round(damage) + " " + GameVars.ticksCounter);
             mine.turret.inflicted += Math.round(damage);
         } else if (laserTurret) {
-            // console.log("LASER " + laserTurret.id + ": " + Math.round(damage) + " " + GameVars.ticksCounter);
             laserTurret.inflicted += Math.round(damage);
         }
 

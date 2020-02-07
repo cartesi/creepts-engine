@@ -335,14 +335,12 @@ export class Engine {
             return { success: false, error: { type: GameConstants.ERROR_ADD_TURRET_POSITION } };
         }
 
-        // mirar si estamos poniendo la torreta encima del camino
         for (let i = 0; i < this.enemiesPathCells.length; i++) {
             if (p.c === this.enemiesPathCells[i].c && p.r === this.enemiesPathCells[i].r) {
                 return { success: false, error: { type: GameConstants.ERROR_ADD_TURRET_POSITION } };
             }
         }
 
-        // mirar si ya hay una torreta
         for (let i = 0; i < this.turrets.length; i++) {
             if (p.c === this.turrets[i].position.c && p.r === this.turrets[i].position.r) {
                 return { success: false, error: { type: GameConstants.ERROR_ADD_TURRET_POSITION } };
@@ -351,7 +349,6 @@ export class Engine {
 
         let isOnPlateau = false;
 
-        // miramos si esta en una celda en la que se puede posicionar
         if (this.plateausCells.length !== 0) {
             for (let i = 0; i < this.plateausCells.length; i++) {
                 if (this.plateausCells[i].c === p.c && this.plateausCells[i].r === p.r) {
@@ -627,7 +624,6 @@ export class Engine {
 
             const dl = MathUtils.fixNumber(l - i);
 
-            // interpolar entre i e i + 1
             x = this.enemiesPathCells[i].c + .5;
             y = this.enemiesPathCells[i].r + .5;
 
@@ -653,7 +649,6 @@ export class Engine {
 
     private checkCollisions(): void {
 
-        // las balas
         for (let i = 0; i < this.bullets.length; i++) {
 
             const bullet = this.bullets[i];
@@ -669,7 +664,6 @@ export class Engine {
                 let enemyPosition: { x: number, y: number };
                 let enemyHit: boolean;
 
-                // no importa si el enemigo ya ha muerto la bala se marca cuando alcanza la posicion que el enemigo muerto tuvo
                 if (enemy) {
 
                     enemyPosition = { x: enemy.x, y: enemy.y };
@@ -680,9 +674,6 @@ export class Engine {
                         this.bulletsColliding.push(bullet);
                     }
                 } else {
-                    // es una bala que tenia asiganada un enemigo que ha sido teletransportada
-                    // mirar si colisiona contra otro enemigo y en este caso reasignarselo
-                    // y meterla en el array de balas a eliminar
                     for (let j = 0; j < this.enemies.length; j++) {
 
                         enemy = this.enemies[j];
@@ -788,7 +779,7 @@ export class Engine {
 
                         if (squaredRange >= squaredDist) {
                             enemy.glue(glue.intensity);
-                            break; // EL EFECTO DEL PEGAMENTO NO ES ACUMULATIVO, NO HACE FALTA COMPROBAR CON MAS PEGAMENTOS
+                            break;
                         }
                     }
                 }
@@ -798,13 +789,11 @@ export class Engine {
 
     private removeProjectilesAndAccountDamage(): void {
 
-        // las balas
         for (let i = 0; i < this.bulletsColliding.length; i++) {
 
             const bullet = this.bulletsColliding[i];
             const enemy = bullet.assignedEnemy;
 
-            // si el enemigo ya ha muerto o la bala ha salido del tablero
             if (bullet.outOfStageBoundaries || enemy.life === 0) {
                 this.eventDispatcher.dispatchEvent(new Event(Event.REMOVE_BULLET, [bullet]));
             } else {
@@ -819,13 +808,11 @@ export class Engine {
 
         this.bulletsColliding.length = 0;
 
-        // las balas de pegamento
         for (let i = 0; i < this.glueBulletsColliding.length; i++) {
 
             const glueBullet = this.glueBulletsColliding[i];
             const enemy = glueBullet.assignedEnemy;
 
-            // si el enemigo ya ha muerto o la bala ha salido del tablero
             if (glueBullet.outOfStageBoundaries || enemy.life === 0) {
                 this.eventDispatcher.dispatchEvent(new Event(Event.REMOVE_GLUE_BULLET, [glueBullet]));
             } else {
@@ -840,7 +827,6 @@ export class Engine {
 
         this.glueBulletsColliding.length = 0;
 
-        // los morteros
         for (let i = 0; i < this.mortarsImpacting.length; i++) {
 
             const mortar = this.mortarsImpacting[i];
@@ -871,7 +857,6 @@ export class Engine {
 
         this.mortarsImpacting.length = 0;
 
-        // las minas
         for (let i = 0; i < this.minesImpacting.length; i++) {
 
             const mine = this.minesImpacting[i];
@@ -908,7 +893,6 @@ export class Engine {
 
         this.minesImpacting.length = 0;
 
-        // los pegamentos
         for (let i = 0; i < this.consumedGlues.length; i++) {
 
             const glue = this.consumedGlues[i];
@@ -933,7 +917,6 @@ export class Engine {
             enemy.teleport(this.teleportedEnemies[i].glueTurret.teleportDistance);
             teleportedEnemiesData.push({ enemy: enemy, glueTurret: this.teleportedEnemies[i].glueTurret });
 
-            // ¿hay balas que tenian asignadas este enemigo?
             for (let i = 0; i < this.bullets.length; i++) {
 
                 const bullet = this.bullets[i];
@@ -1115,7 +1098,6 @@ export class Engine {
         this.turretsAttributes[turret][grade - 1][attribute] = res;
     }
 
-    // GETTERS Y SETTERS
     public get credits(): number {
 
         return this._credits;

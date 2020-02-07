@@ -48,7 +48,7 @@ export class Mine {
     }
 
     public destroy(): void {
-        // nada de momento
+        // do nothing
     }
 
     public update(): void {

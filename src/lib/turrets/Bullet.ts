@@ -65,7 +65,7 @@ export class Bullet {
         this.x = MathUtils.fixNumber(this.x + this.vx);
         this.y = MathUtils.fixNumber(this.y + this.vy);
 
-        // ¿se salio de los limites del tablero?
+        // check if out of battle zone
         if (this.x < -1 || this.x > this.engine.boardSize.c + 1 || this.y < - 1 || this.y > this.engine.boardSize.r + 1) {
             this.outOfStageBoundaries = true;
         }

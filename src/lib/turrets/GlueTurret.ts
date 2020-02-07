@@ -38,7 +38,6 @@ export class GlueTurret extends Turret {
         this.calculateTurretParameters();
     }
 
-    // mirar en el ANUTO y generar las formulas que correspondan
     protected calculateTurretParameters(): void {
 
         let turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
@@ -87,13 +86,13 @@ export class GlueTurret extends Turret {
 
                 const d = MathUtils.fixNumber(Math.sqrt((this.x - enemy.x) * (this.x - enemy.x) + (this.y - enemy.y) * (this.y - enemy.y)));
 
-                // cuantos ticks va a tardar la bala en llegar?
+                // how many ticks until bullet on target
                 const ticksToImpact = Math.floor(MathUtils.fixNumber(d / this.projectileSpeed));
 
-                // encontrar la posicion del enemigo dentro de estos ticks
+                // find the enemy position after these ticks
                 const impactPosition = enemy.getNextPosition(ticksToImpact);
 
-                // la posicion de impacto sigue estando dentro del radio de accion?
+                // is the position still in range?
                 const dx = impactPosition.x - this.x;
                 const dy = impactPosition.y - this.y;
 

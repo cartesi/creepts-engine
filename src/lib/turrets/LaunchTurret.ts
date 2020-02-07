@@ -40,7 +40,6 @@ export class LaunchTurret extends Turret {
 
     public update(): void {
 
-        // cuando tiene grado 2 no hace falta calcular los enemigos que tenga en el radio de accion
         if (this.grade === 2) {
 
             if (this.readyToShoot) {

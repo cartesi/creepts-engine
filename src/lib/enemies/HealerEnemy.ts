@@ -26,7 +26,6 @@ export class HealerEnemy extends Enemy {
 
         super(GameConstants.ENEMY_HEALER, creationTick, engine);
 
-        // para que no se paren todos en el mismo lugar y al mismo tiempo
         this.f = GameConstants.HEALER_HEALING_TICKS - creationTick % GameConstants.HEALER_HEALING_TICKS;
 
         this.healing = false;
@@ -49,7 +48,7 @@ export class HealerEnemy extends Enemy {
 
             super.update();
 
-            // no cura si ya esta muy cerca de la salida
+            // don't heal if it's too close from the exit
             if (this.f >= GameConstants.HEALER_HEALING_TICKS && this.l < this.engine.enemiesPathCells.length - 2) {
                 this.f = 0;
                 this.healing = true;
@@ -59,13 +58,13 @@ export class HealerEnemy extends Enemy {
 
     private heal(): void {
 
-        // encontrar a todos los enemigos que esten dentro de un determinado radio y restaurarles la salud
+        // find all enemies in range and restore health
         for (let i = 0; i < this.engine.enemies.length; i++) {
 
             const enemy = this.engine.enemies[i];
 
             if (enemy.id === this.id) {
-                // se cura a si mismo
+                // heal itself
                 enemy.restoreHealth();
             } else {
                 const distanceSquare = MathUtils.fixNumber((enemy.x - this.x) * (enemy.x - this.x) + (enemy.y - this.y) * (enemy.y - this.y));
