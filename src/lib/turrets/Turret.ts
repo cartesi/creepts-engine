@@ -36,7 +36,7 @@ export class Turret {
     public priceUpgrade: number;
     public value: number;
     public sellValue: number;
-    public position: { r: number, c: number };
+    public position: { r: number; c: number };
     public shootingStrategy: string;
     public shootingStrategyIndex: number;
     public fixedTarget: boolean;
@@ -51,7 +51,7 @@ export class Turret {
     protected readyToShoot: boolean;
     protected engine: Engine;
 
-    constructor(type: string, p: { r: number, c: number }, engine: Engine) {
+    constructor(type: string, p: { r: number; c: number }, engine: Engine) {
 
         this.engine = engine;
 
@@ -173,7 +173,7 @@ export class Turret {
 
     public getEnemiesWithinRange(): Enemy[] {
 
-        let enemiesAndSquaredDistances: { enemy: Enemy, squareDist: number }[] = [];
+        const enemiesAndSquaredDistances: { enemy: Enemy; squareDist: number }[] = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
 
@@ -201,7 +201,7 @@ export class Turret {
             switch (this.shootingStrategy) {
 
                 case GameConstants.STRATEGY_SHOOT_FIRST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy, squareDist: number }, e2: { enemy: Enemy, squareDist: number }): number {
+                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
 
                         if (e1.enemy.l === e2.enemy.l) {
                             return e1.enemy.id - e2.enemy.id;
@@ -212,7 +212,7 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_LAST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy, squareDist: number }, e2: { enemy: Enemy, squareDist: number }): number {
+                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
 
                         if (e1.enemy.l === e2.enemy.l) {
                             return e1.enemy.id - e2.enemy.id;
@@ -223,7 +223,7 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_CLOSEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy, squareDist: number }, e2: { enemy: Enemy, squareDist: number }): number {
+                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
 
                         if (e1.squareDist === e2.squareDist) {
                             if (e1.enemy.l === e2.enemy.l) {
@@ -239,7 +239,7 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_WEAKEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy, squareDist: number }, e2: { enemy: Enemy, squareDist: number }): number {
+                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
 
                         if (e1.enemy.life === e2.enemy.life) {
                             if (e1.enemy.l === e2.enemy.l) {
@@ -255,7 +255,7 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_STRONGEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy, squareDist: number }, e2: { enemy: Enemy, squareDist: number }): number {
+                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
 
                         if (e1.enemy.life === e2.enemy.life) {
                             if (e1.enemy.l === e2.enemy.l) {

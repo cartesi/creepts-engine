@@ -31,7 +31,7 @@ export class EnemiesSpawner {
 
         if (this.engine.waveEnemies.length > 0) {
 
-            let nextEnemyData = this.engine.waveEnemies[0];
+            const nextEnemyData = this.engine.waveEnemies[0];
 
             if (nextEnemyData.t === this.engine.ticksCounter) {
 

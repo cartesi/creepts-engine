@@ -30,7 +30,7 @@ export class Mine {
 
     private engine: Engine;
 
-    constructor(p: { r: number, c: number }, explosionRange: number, damage: number, turret: LaunchTurret, engine: Engine) {
+    constructor(p: { r: number; c: number }, explosionRange: number, damage: number, turret: LaunchTurret, engine: Engine) {
 
         this.id = engine.mineId;
         engine.mineId++;
@@ -72,9 +72,9 @@ export class Mine {
         }
     }
 
-    public getEnemiesWithinExplosionRange(): { enemy: Enemy, damage: number }[] {
+    public getEnemiesWithinExplosionRange(): { enemy: Enemy; damage: number }[] {
 
-        const hitEnemiesData: { enemy: Enemy, damage: number }[] = [];
+        const hitEnemiesData: { enemy: Enemy; damage: number }[] = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
 

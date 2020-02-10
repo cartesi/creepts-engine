@@ -35,7 +35,7 @@ export class Mortar {
     private engine: Engine;
 
     // mortar speed in cells / tick
-    constructor(p: { r: number, c: number }, angle: number, ticksToImpact: number, explosionRange: number, damage: number, grade: number, turret: LaunchTurret, engine: Engine) {
+    constructor(p: { r: number; c: number }, angle: number, ticksToImpact: number, explosionRange: number, damage: number, grade: number, turret: LaunchTurret, engine: Engine) {
 
         this.id = engine.mortarId;
         engine.mortarId++;
@@ -75,9 +75,9 @@ export class Mortar {
         }
     }
 
-    public getEnemiesWithinExplosionRange(): { enemy: Enemy, damage: number }[] {
+    public getEnemiesWithinExplosionRange(): { enemy: Enemy; damage: number }[] {
 
-        const hitEnemiesData: { enemy: Enemy, damage: number }[] = [];
+        const hitEnemiesData: { enemy: Enemy; damage: number }[] = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
 

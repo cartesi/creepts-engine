@@ -11,11 +11,19 @@
 // under the License.
 
 
-import * as Types from "./lib/Types";
-export { Types };
-export * from "./lib/enemies";
-export * from "./lib/turrets";
-export * from "./lib/events";
+// import * as Types from "./lib/Types";
+// export { Types };
+// export * from "./lib/enemies";
+// export * from "./lib/turrets";
+// export * from "./lib/events";
+export {
+    EnemyAttributes,
+    LevelObject,
+    MapObject,
+    TurretAttributes,
+    WaveAttributes
+} from "./lib/Types";
+
 export { Engine } from "./lib/Engine";
 export { EngineRunner, ProgressInformation } from "./lib/EngineRunner";
 export { GameConstants } from "./lib/GameConstants";

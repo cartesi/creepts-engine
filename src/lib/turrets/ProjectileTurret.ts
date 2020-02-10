@@ -22,7 +22,7 @@ export class ProjectileTurret extends Turret {
 
     private canonShoot: string;
 
-    constructor(p: { r: number, c: number }, engine: Engine) {
+    constructor(p: { r: number; c: number }, engine: Engine) {
 
         super(GameConstants.TURRET_PROJECTILE, p, engine);
 
@@ -33,6 +33,7 @@ export class ProjectileTurret extends Turret {
             case 2:
             case 3:
                 this.canonShoot = "left";
+                break;
             default:
         }
 
@@ -44,7 +45,7 @@ export class ProjectileTurret extends Turret {
     // estos valores estan sacados del anuto
     protected calculateTurretParameters(): void {
 
-        let turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
 
         this.damage = turretDataAtributes.damage[this.level - 1];
         this.reload = turretDataAtributes.reload[this.level - 1];
@@ -89,6 +90,7 @@ export class ProjectileTurret extends Turret {
                 } else {
                     this.canonShoot = "left";
                 }
+                break;
             default:
         }
 

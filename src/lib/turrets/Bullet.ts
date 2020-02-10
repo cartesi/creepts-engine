@@ -33,7 +33,7 @@ export class Bullet {
     private vy: number;
 
     // bullet speed in cells / tick
-    constructor(p: { r: number, c: number }, angle: number, assignedEnemy: Enemy, damage: number, canonShoot: string, turret: ProjectileTurret, engine: Engine) {
+    constructor(p: { r: number; c: number }, angle: number, assignedEnemy: Enemy, damage: number, canonShoot: string, turret: ProjectileTurret, engine: Engine) {
 
         this.engine = engine;
 
@@ -71,7 +71,7 @@ export class Bullet {
         }
     }
 
-    public getPositionNextTick(): { x: number, y: number } {
+    public getPositionNextTick(): { x: number; y: number } {
 
         return { x: MathUtils.fixNumber(this.x + this.vx), y: MathUtils.fixNumber(this.y + this.vy) };
     }

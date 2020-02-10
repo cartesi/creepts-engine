@@ -32,7 +32,7 @@ export class GlueBullet {
     private vy: number;
 
     // bullet speed in cells / tick
-    constructor(p: { r: number, c: number }, angle: number, assignedEnemy: Enemy, intensity: number, durationTicks: number, engine: Engine) {
+    constructor(p: { r: number; c: number }, angle: number, assignedEnemy: Enemy, intensity: number, durationTicks: number, engine: Engine) {
 
         this.engine = engine;
 
@@ -68,7 +68,7 @@ export class GlueBullet {
         }
     }
 
-    public getPositionNextTick(): { x: number, y: number } {
+    public getPositionNextTick(): { x: number; y: number } {
 
         return { x: MathUtils.fixNumber(this.x + this.vx), y: MathUtils.fixNumber(this.y + this.vy) };
     }

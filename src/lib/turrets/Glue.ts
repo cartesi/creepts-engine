@@ -25,7 +25,7 @@ export class Glue {
 
     private f: number;
 
-    constructor(p: { r: number, c: number }, intensity: number, duration: number, range: number, engine: Engine) {
+    constructor(p: { r: number; c: number }, intensity: number, duration: number, range: number, engine: Engine) {
 
         this.id = engine.glueId;
         engine.glueId++;

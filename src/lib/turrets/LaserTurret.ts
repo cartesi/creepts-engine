@@ -19,7 +19,7 @@ import { Turret } from "./Turret";
 
 export class LaserTurret extends Turret {
 
-    constructor(p: { r: number, c: number }, engine: Engine) {
+    constructor(p: { r: number; c: number }, engine: Engine) {
 
         super(GameConstants.TURRET_LASER, p, engine);
 
@@ -29,7 +29,7 @@ export class LaserTurret extends Turret {
 
     protected calculateTurretParameters(): void {
 
-        let turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
 
         this.damage = turretDataAtributes.damage[this.level - 1];
         this.reload = turretDataAtributes.reload[this.level - 1];
@@ -45,14 +45,14 @@ export class LaserTurret extends Turret {
 
     protected getEnemiesWithinLine(enemy: Enemy): Enemy[] {
 
-        let newEnemies = [];
+        const newEnemies = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
 
             const newEnemy = this.engine.enemies[i];
 
-            let infiniteX = newEnemy.x + (enemy.x - this.x) * 1000;
-            let infiniteY = newEnemy.y + (enemy.y - this.y) * 1000;
+            const infiniteX = newEnemy.x + (enemy.x - this.x) * 1000;
+            const infiniteY = newEnemy.y + (enemy.y - this.y) * 1000;
 
             if (newEnemy !== enemy && MathUtils.isLineSegmentIntersectingCircle({ x: this.x, y: this.y }, { x: infiniteX, y: infiniteY }, { x: newEnemy.x, y: newEnemy.y }, .3)) {
                 newEnemies.push(newEnemy);

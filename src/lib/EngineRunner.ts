@@ -34,7 +34,7 @@ export class EngineRunner {
         this.level.gameConfig.runningInClientSide = false;
     }
 
-    private errorMessage(type: string, info?: any) {
+    private errorMessage(type: string, info?: any): string {
         switch(type) {
             case GameConstants.ERROR_VERSION_MISMATCH:
                 return "Version mismatch. Engine Version: " + info.engineVersion + ". Logs Version: " + info.logsVersion + ".";
@@ -85,9 +85,9 @@ export class EngineRunner {
         // tick of last user action (may not be last tick of simulation)
         const lastActionTick = logs.actions[logs.actions.length - 1].tick;
         
-        for (var i = 0; i < logs.actions.length; i++) {
+        for (let i = 0; i < logs.actions.length; i++) {
     
-            var action = logs.actions[i];
+            const action = logs.actions[i];
             let result: EngineReturn = { success: true };
     
             if (typeof action.tick !== "number" || action.tick < engine.ticksCounter) {

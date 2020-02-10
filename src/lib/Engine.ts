@@ -43,8 +43,8 @@ export class Engine {
     public waveReward: number;
     public remainingReward: number;
     public enemies: Enemy[];
-    public enemiesPathCells: { r: number, c: number }[];
-    public plateausCells: { r: number, c: number }[];
+    public enemiesPathCells: { r: number; c: number }[];
+    public plateausCells: { r: number; c: number }[];
     public turretId: number;
     public enemyId: number;
     public bulletId: number;
@@ -54,7 +54,7 @@ export class Engine {
     public waveDefaultHealth: number;
     public enemyHealthModifier: number;
     public enemyRewardModifier: number;
-    public boardSize: { r: number, c: number };
+    public boardSize: { r: number; c: number };
 
     private runningInClientSide: boolean;
     private _version: string;
@@ -79,7 +79,7 @@ export class Engine {
     private mortarsImpacting: Mortar[];
     private minesImpacting: Mine[];
     private consumedGlues: Glue[];
-    private teleportedEnemies: { enemy: Enemy, glueTurret: GlueTurret }[];
+    private teleportedEnemies: { enemy: Enemy; glueTurret: GlueTurret }[];
     private t: number;
     private eventDispatcher: EventDispatcher;
     private enemiesSpawner: EnemiesSpawner;
@@ -171,6 +171,9 @@ export class Engine {
 
         if (this.runningInClientSide) {
 
+            // frame rating control
+            // XXX: this should be outside the engine
+            // XXX: runningInClientSide variable should not even exist
             const t = Date.now();
 
             if (t - this.t < this._timeStep) {
@@ -254,10 +257,10 @@ export class Engine {
         this._noEnemiesOnStage = false;
         this.allEnemiesSpawned = false;
 
-        let length = this.wavesData.length;
-        let waveData = this.wavesData[this._round % length];
+        const length = this.wavesData.length;
+        const waveData = this.wavesData[this._round % length];
 
-        let initialWaveEnemies = waveData.enemies.slice(0);
+        const initialWaveEnemies = waveData.enemies.slice(0);
 
         let newWaveEnemies = JSON.parse(JSON.stringify(initialWaveEnemies));
 
@@ -268,8 +271,8 @@ export class Engine {
 
         for (let i = 0; i < extraWaves; i++) {
 
-            let nextWaveEnemies = JSON.parse(JSON.stringify(initialWaveEnemies));
-            let lastTickValue = newWaveEnemies[newWaveEnemies.length - 1].t;
+            const nextWaveEnemies = JSON.parse(JSON.stringify(initialWaveEnemies));
+            const lastTickValue = newWaveEnemies[newWaveEnemies.length - 1].t;
 
             for (let j = 0; j < nextWaveEnemies.length; j++) {
                 nextWaveEnemies[j].t += (lastTickValue + 2);
@@ -299,7 +302,7 @@ export class Engine {
             this.remainingReward += Math.round(this.enemyRewardModifier * this.enemyData[this.waveEnemies[i].type].value);
         }
 
-        let damagePossible = Math.round(GameConstants.DIFFICULTY_LINEAR * this._creditsEarned + GameConstants.DIFFICULTY_MODIFIER * Math.pow(this._creditsEarned, GameConstants.DIFFICULTY_EXPONENT));
+        const damagePossible = Math.round(GameConstants.DIFFICULTY_LINEAR * this._creditsEarned + GameConstants.DIFFICULTY_MODIFIER * Math.pow(this._creditsEarned, GameConstants.DIFFICULTY_EXPONENT));
         let healthModifier = MathUtils.fixNumber(damagePossible / this.waveDefaultHealth);
         healthModifier = Math.max(healthModifier, GameConstants.MIN_HEALTH_MODIFIER);
 
@@ -325,7 +328,7 @@ export class Engine {
         enemy.destroy();
     }
 
-    public addTurret(type: string, p: { r: number, c: number }): Types.EngineReturn {
+    public addTurret(type: string, p: { r: number; c: number }): Types.EngineReturn {
 
         if (typeof type !== "string" || !p || typeof p.c !== "number" || typeof p.r !== "number") {
             return { success: false, error: { type: GameConstants.ERROR_ACTION_VALUE } };
@@ -604,7 +607,7 @@ export class Engine {
         return { success: true };
     }
 
-    public getPathPosition(l: number): { x: number, y: number } {
+    public getPathPosition(l: number): { x: number; y: number } {
 
         let x: number;
         let y: number;
@@ -661,13 +664,13 @@ export class Engine {
                 const bp1 = { x: bullet.x, y: bullet.y };
                 const bp2 = bullet.getPositionNextTick();
 
-                let enemyPosition: { x: number, y: number };
+                let enemyPosition: { x: number; y: number };
                 let enemyHit: boolean;
 
                 if (enemy) {
 
                     enemyPosition = { x: enemy.x, y: enemy.y };
-                    let boundingRadius = enemy.life > 0 ? enemy.boundingRadius : 1.65 * enemy.boundingRadius;
+                    const boundingRadius = enemy.life > 0 ? enemy.boundingRadius : 1.65 * enemy.boundingRadius;
                     enemyHit = MathUtils.isLineSegmentIntersectingCircle(bp1, bp2, enemyPosition, boundingRadius);
 
                     if (enemyHit) {
@@ -704,14 +707,14 @@ export class Engine {
                 const bp1 = { x: gluebullet.x, y: gluebullet.y };
                 const bp2 = gluebullet.getPositionNextTick();
 
-                let enemyPosition: { x: number, y: number };
+                let enemyPosition: { x: number; y: number };
                 let enemyHit: boolean;
 
                 if (enemy) {
 
                     enemyPosition = { x: enemy.x, y: enemy.y };
 
-                    let boundingRadius = enemy.life > 0 ? enemy.boundingRadius : 1.65 * enemy.boundingRadius;
+                    const boundingRadius = enemy.life > 0 ? enemy.boundingRadius : 1.65 * enemy.boundingRadius;
                     enemyHit = MathUtils.isLineSegmentIntersectingCircle(bp1, bp2, enemyPosition, boundingRadius);
 
                     if (enemyHit) {
@@ -775,7 +778,7 @@ export class Engine {
                         const dy = enemy.y - glue.y;
 
                         const squaredDist = MathUtils.fixNumber(dx * dx + dy * dy);
-                        let squaredRange = MathUtils.fixNumber(glue.range * glue.range);
+                        const squaredRange = MathUtils.fixNumber(glue.range * glue.range);
 
                         if (squaredRange >= squaredDist) {
                             enemy.glue(glue.intensity);
@@ -831,7 +834,7 @@ export class Engine {
 
             const mortar = this.mortarsImpacting[i];
 
-            const hitEnemiesData: { enemy: Enemy, damage: number }[] = mortar.getEnemiesWithinExplosionRange();
+            const hitEnemiesData: { enemy: Enemy; damage: number }[] = mortar.getEnemiesWithinExplosionRange();
             const hitEnemies: Enemy[] = [];
 
             if (hitEnemiesData.length > 0) {
@@ -861,7 +864,7 @@ export class Engine {
 
             const mine = this.minesImpacting[i];
 
-            const hitEnemiesData: { enemy: Enemy, damage: number }[] = mine.getEnemiesWithinExplosionRange();
+            const hitEnemiesData: { enemy: Enemy; damage: number }[] = mine.getEnemiesWithinExplosionRange();
             const hitEnemies: Enemy[] = [];
 
             if (hitEnemiesData.length > 0) {
@@ -882,7 +885,7 @@ export class Engine {
             const index = this.mines.indexOf(mine);
             this.mines.splice(index, 1);
 
-            let turret = mine.turret;
+            const turret = mine.turret;
 
             if (turret) {
                 turret.numMines--;
@@ -909,7 +912,7 @@ export class Engine {
 
     private teleport(): void {
 
-        const teleportedEnemiesData: { enemy: Enemy, glueTurret: GlueTurret }[] = [];
+        const teleportedEnemiesData: { enemy: Enemy; glueTurret: GlueTurret }[] = [];
 
         for (let i = 0; i < this.teleportedEnemies.length; i++) {
 
@@ -999,7 +1002,7 @@ export class Engine {
     private generateTurretsAttributes(): void {
 
         this.turretsAttributes = {};
-        for (let turretType in this.turretData) {
+        for (const turretType in this.turretData) {
 
             this.turretsAttributes[turretType] = [{}, {}, {}];
 
@@ -1082,7 +1085,7 @@ export class Engine {
 
     private setAttributes(turret: string, grade: number, attribute: string, pprev: number, prev: number, func: string, length: number): void {
 
-        let res = [];
+        const res = [];
         for (let i = 0; i < length; i++) {
             if (i === 0) {
                 res[i] = pprev;
@@ -1148,14 +1151,14 @@ export class Engine {
         return this._lifes;
     }
 
-    public get noEnemiesOnStage(): boolean {
-
-        return this._noEnemiesOnStage;
-    }
-
     public set lifes(value: number) {
 
         this._lifes = value;
+    }
+
+    public get noEnemiesOnStage(): boolean {
+
+        return this._noEnemiesOnStage;
     }
 
     public get round(): number {

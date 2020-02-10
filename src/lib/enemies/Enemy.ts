@@ -18,6 +18,7 @@ import { Bullet } from "../turrets/Bullet";
 import { LaserTurret } from "../turrets/LaserTurret";
 import { Mine } from "../turrets/Mine";
 import { Mortar } from "../turrets/Mortar";
+import { EnemyAttributes } from "../Types";
 
 export class Enemy {
 
@@ -44,7 +45,7 @@ export class Enemy {
 
     public modifiers: { [key: string]: string };
 
-    protected enemyData: any;
+    protected enemyData: EnemyAttributes;
     protected t: number;
     protected engine: Engine;
     protected glueTicksCounter: number;
@@ -253,7 +254,7 @@ export class Enemy {
         }
     }
 
-    public getNextPosition(deltaTicks: number): { x: number, y: number } {
+    public getNextPosition(deltaTicks: number): { x: number; y: number } {
 
         let speed = this.speed;
 
@@ -261,7 +262,7 @@ export class Enemy {
             speed = MathUtils.fixNumber(this.speed / this.glueIntensity);
         }
 
-        let l = MathUtils.fixNumber(this.l + speed * deltaTicks);
+        const l = MathUtils.fixNumber(this.l + speed * deltaTicks);
 
         const p = this.engine.getPathPosition(l);
 

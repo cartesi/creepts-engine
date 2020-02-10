@@ -18,7 +18,7 @@ export class MathUtils {
         return isNaN(n) ? 0 : Math.round(1e5 * n) / 1e5;
     }
 
-    public static isLineSegmentIntersectingCircle(p1: { x: number, y: number }, p2: { x: number, y: number }, c: { x: number, y: number }, r: number): boolean {
+    public static isLineSegmentIntersectingCircle(p1: { x: number; y: number }, p2: { x: number; y: number }, c: { x: number; y: number }, r: number): boolean {
 
         const inside1 = MathUtils.isPointInsideCircle(p1.x, p1.y, c.x, c.y, r);
 
@@ -86,7 +86,7 @@ export class MathUtils {
     public static mergeSort(list: any[], compareFunction?: Function): any[] {
 
         if (!compareFunction) {
-            compareFunction = function (x: number, y: number) {
+            compareFunction = function (x: number, y: number): boolean {
                 return x < y;
             };
         }
@@ -95,17 +95,14 @@ export class MathUtils {
             return list;
         }
 
-        let leftHalf: any[];
-        let rigthHalf: any[];
-
         const splitingResult = MathUtils.splitList(list);
-        leftHalf = splitingResult.leftHalf;
-        rigthHalf = splitingResult.rigthHalf;
+        const leftHalf = splitingResult.leftHalf;
+        const rigthHalf = splitingResult.rigthHalf;
 
         return MathUtils.jointLists(MathUtils.mergeSort(leftHalf, compareFunction), MathUtils.mergeSort(rigthHalf, compareFunction), compareFunction);
     }
 
-    private static splitList(list: any[]): { leftHalf: any[], rigthHalf: any[] } {
+    private static splitList(list: any[]): { leftHalf: any[]; rigthHalf: any[] } {
 
         if (list.length === 0) {
             return { leftHalf: [], rigthHalf: [] };

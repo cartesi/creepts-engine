@@ -26,7 +26,7 @@ export class LaunchTurret extends Turret {
 
     private minesCounter: number;
 
-    constructor(p: { r: number, c: number }, engine: Engine) {
+    constructor(p: { r: number; c: number }, engine: Engine) {
 
         super(GameConstants.TURRET_LAUNCH, p, engine);
 
@@ -65,7 +65,7 @@ export class LaunchTurret extends Turret {
 
     protected calculateTurretParameters(): void {
 
-        let turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
 
         this.damage = turretDataAtributes.damage[this.level - 1];
         this.explosionRange = turretDataAtributes.explosionRange[this.level - 1];
@@ -81,13 +81,13 @@ export class LaunchTurret extends Turret {
         super.calculateTurretParameters();
     }
 
-    protected getPathCellsInRange(): { r: number, c: number }[] {
+    protected getPathCellsInRange(): { r: number; c: number }[] {
 
-        let cells = [];
+        const cells = [];
 
         for (let i = 0; i < this.engine.enemiesPathCells.length; i++) {
 
-            let cell = this.engine.enemiesPathCells[i];
+            const cell = this.engine.enemiesPathCells[i];
 
             if (cell.c >= this.position.c && cell.c <= this.position.c + this.range ||
                 cell.c <= this.position.c && cell.c >= this.position.c - this.range) {
@@ -107,10 +107,10 @@ export class LaunchTurret extends Turret {
 
         if (this.grade === 2) {
 
-            let cells: { r: number, c: number }[] = this.getPathCellsInRange();
+            const cells: { r: number; c: number }[] = this.getPathCellsInRange();
 
             if (cells.length > 0 && this.numMines < this.level + 3) {
-                let cell = cells[this.minesCounter % cells.length];
+                const cell = cells[this.minesCounter % cells.length];
                 this.minesCounter++;
                 this.numMines++;
 
@@ -136,7 +136,7 @@ export class LaunchTurret extends Turret {
             }
 
             let ticksToImpact: number;
-            let impactPosition: { x: number, y: number };
+            let impactPosition: { x: number; y: number };
             let d = this.range;
 
             let iterations: number;

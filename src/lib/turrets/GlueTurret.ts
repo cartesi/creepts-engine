@@ -40,7 +40,7 @@ export class GlueTurret extends Turret {
 
     protected calculateTurretParameters(): void {
 
-        let turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
 
         this.reload = turretDataAtributes.reload[this.level - 1];
         this.range = turretDataAtributes.range[this.level - 1];
@@ -71,9 +71,7 @@ export class GlueTurret extends Turret {
         switch (this.grade) {
 
             case 1:
-
-                const glue = new Glue(this.position, this.intensity, this.durationTicks, this.range, this.engine);
-                this.engine.addGlue(glue, this);
+                this.engine.addGlue(new Glue(this.position, this.intensity, this.durationTicks, this.range, this.engine), this);
                 break;
 
             case 2:
