@@ -4,6 +4,8 @@ tsconfig.json
 tsconfig.module.json
 tslint.json
 .travis.yml
+.editorconfig
+.eslintrc.js
 .github
 .prettierignore
 .vscode
