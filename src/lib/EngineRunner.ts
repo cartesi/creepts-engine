@@ -15,7 +15,7 @@ import { LevelObject, LogsObject, EngineReturn } from "./Types";
 import { GameConstants } from "./GameConstants";
 import { Engine } from "./Engine";
 
-export interface ProgressInformation {
+export interface EngineState {
     timestamp: Date;
     ticksCounter: number;
     lastActionTick: number;
@@ -67,7 +67,7 @@ export class EngineRunner {
         }
     }
     
-    public run(logs: LogsObject, progressCallback?: (progress: ProgressInformation) => void): number {
+    public run(logs: LogsObject, progressCallback?: (progress: EngineState) => void): EngineState {
 
         const engine = new Engine(this.level.gameConfig, this.level.enemiesData, this.level.turretsData, this.level.wavesData);
 
@@ -151,6 +151,14 @@ export class EngineRunner {
         }
     
         // return score and exit normally
-        return engine.score;
+        return {
+            timestamp: new Date(),
+            ticksCounter: engine.ticksCounter,
+            lastActionTick: lastActionTick,
+            score: engine.score,
+            lifes: engine.lifes,
+            round: engine.round,
+            credits: engine.credits
+        };
     }
 }

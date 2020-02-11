@@ -25,5 +25,5 @@ export {
 } from "./lib/Types";
 
 export { Engine } from "./lib/Engine";
-export { EngineRunner, ProgressInformation } from "./lib/EngineRunner";
+export { EngineRunner, EngineState } from "./lib/EngineRunner";
 export { GameConstants } from "./lib/GameConstants";
