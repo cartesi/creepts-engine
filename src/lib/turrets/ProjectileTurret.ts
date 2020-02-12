@@ -1,38 +1,34 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
-import { GameConstants } from "../GameConstants";
-import { MathUtils } from "../utils/MathUtils";
-import { Engine } from "../Engine";
-import { Enemy } from "../enemies/Enemy";
-import { Bullet } from "./Bullet";
-import { Turret } from "./Turret";
+import { GameConstants } from '../GameConstants';
+import { MathUtils } from '../utils/MathUtils';
+import { Engine } from '../Engine';
+import { Enemy } from '../enemies/Enemy';
+import { Bullet } from './Bullet';
+import { Turret } from './Turret';
 
 export class ProjectileTurret extends Turret {
-
     private canonShoot: string;
 
     constructor(p: { r: number; c: number }, engine: Engine) {
-
         super(GameConstants.TURRET_PROJECTILE, p, engine);
 
-        this.canonShoot = "center";
+        this.canonShoot = 'center';
 
         switch (this.grade) {
-
             case 2:
             case 3:
-                this.canonShoot = "left";
+                this.canonShoot = 'left';
                 break;
             default:
         }
@@ -44,13 +40,15 @@ export class ProjectileTurret extends Turret {
 
     // estos valores estan sacados del anuto
     protected calculateTurretParameters(): void {
-
-        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][
+            this.grade - 1
+        ];
 
         this.damage = turretDataAtributes.damage[this.level - 1];
         this.reload = turretDataAtributes.reload[this.level - 1];
         this.range = turretDataAtributes.range[this.level - 1];
-        this.priceImprovement = turretDataAtributes.priceImprovement[this.level - 1];
+        this.priceImprovement =
+            turretDataAtributes.priceImprovement[this.level - 1];
 
         if (this.grade < 3) {
             this.priceUpgrade = turretDataAtributes.priceUpgrade;
@@ -60,7 +58,6 @@ export class ProjectileTurret extends Turret {
     }
 
     protected shoot(): void {
-
         super.shoot();
 
         let enemy: Enemy;
@@ -71,10 +68,17 @@ export class ProjectileTurret extends Turret {
             enemy = this.enemiesWithinRange[0];
         }
 
-        const d = MathUtils.fixNumber(Math.sqrt((this.x - enemy.x) * (this.x - enemy.x) + (this.y - enemy.y) * (this.y - enemy.y)));
+        const d = MathUtils.fixNumber(
+            Math.sqrt(
+                (this.x - enemy.x) * (this.x - enemy.x) +
+                    (this.y - enemy.y) * (this.y - enemy.y)
+            )
+        );
 
         // cuantos ticks va a tardar la bala en llegar?
-        const ticksToImpact = Math.floor(MathUtils.fixNumber(d / this.projectileSpeed));
+        const ticksToImpact = Math.floor(
+            MathUtils.fixNumber(d / this.projectileSpeed)
+        );
 
         const impactPosition = enemy.getNextPosition(ticksToImpact);
 
@@ -82,20 +86,27 @@ export class ProjectileTurret extends Turret {
         const dy = impactPosition.y - this.y;
 
         switch (this.grade) {
-
             case 2:
             case 3:
-                if (this.canonShoot === "left") {
-                    this.canonShoot = "right";
+                if (this.canonShoot === 'left') {
+                    this.canonShoot = 'right';
                 } else {
-                    this.canonShoot = "left";
+                    this.canonShoot = 'left';
                 }
                 break;
             default:
         }
 
         this.shootAngle = MathUtils.fixNumber(Math.atan2(dy, dx));
-        const bullet = new Bullet({ c: this.position.c, r: this.position.r }, this.shootAngle, enemy, this.damage, this.canonShoot, this, this.engine);
+        const bullet = new Bullet(
+            { c: this.position.c, r: this.position.r },
+            this.shootAngle,
+            enemy,
+            this.damage,
+            this.canonShoot,
+            this,
+            this.engine
+        );
 
         this.engine.addBullet(bullet, this);
     }

@@ -1,27 +1,25 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
-import { MathUtils } from "../utils/MathUtils";
-import { GameConstants } from "../GameConstants";
-import { Engine } from "../Engine";
-import { Bullet } from "../turrets/Bullet";
-import { LaserTurret } from "../turrets/LaserTurret";
-import { Mine } from "../turrets/Mine";
-import { Mortar } from "../turrets/Mortar";
-import { EnemyAttributes } from "../Types";
+import { MathUtils } from '../utils/MathUtils';
+import { GameConstants } from '../GameConstants';
+import { Engine } from '../Engine';
+import { Bullet } from '../turrets/Bullet';
+import { LaserTurret } from '../turrets/LaserTurret';
+import { Mine } from '../turrets/Mine';
+import { Mortar } from '../turrets/Mortar';
+import { EnemyAttributes } from '../Types';
 
 export class Enemy {
-
     public type: string;
     public id: number;
     public life: number;
@@ -51,7 +49,6 @@ export class Enemy {
     protected glueTicksCounter: number;
 
     constructor(type: string, creationTick: number, engine: Engine) {
-
         this.id = engine.enemyId;
         engine.enemyId++;
 
@@ -87,24 +84,25 @@ export class Enemy {
         this.prevX = this.x;
         this.prevY = this.y;
 
-        this.boundingRadius = this.type === GameConstants.ENEMY_RUNNER ? .5 : .475;
+        this.boundingRadius =
+            this.type === GameConstants.ENEMY_RUNNER ? 0.5 : 0.475;
 
         switch (this.type) {
             case GameConstants.ENEMY_HEALER:
-                this.modifiers[GameConstants.TURRET_LASER] = "weak";
-                this.modifiers[GameConstants.TURRET_PROJECTILE] = "weak";
+                this.modifiers[GameConstants.TURRET_LASER] = 'weak';
+                this.modifiers[GameConstants.TURRET_PROJECTILE] = 'weak';
                 break;
             case GameConstants.ENEMY_FLIER:
-                this.modifiers[GameConstants.TURRET_LASER] = "weak";
-                this.modifiers[GameConstants.TURRET_PROJECTILE] = "weak";
+                this.modifiers[GameConstants.TURRET_LASER] = 'weak';
+                this.modifiers[GameConstants.TURRET_PROJECTILE] = 'weak';
                 break;
             case GameConstants.ENEMY_RUNNER:
-                this.modifiers[GameConstants.TURRET_LAUNCH] = "weak";
-                this.modifiers[GameConstants.TURRET_LASER] = "strong";
+                this.modifiers[GameConstants.TURRET_LAUNCH] = 'weak';
+                this.modifiers[GameConstants.TURRET_LASER] = 'strong';
                 break;
             case GameConstants.ENEMY_BLOB:
-                this.modifiers[GameConstants.TURRET_LAUNCH] = "weak";
-                this.modifiers[GameConstants.TURRET_PROJECTILE] = "strong";
+                this.modifiers[GameConstants.TURRET_LAUNCH] = 'weak';
+                this.modifiers[GameConstants.TURRET_PROJECTILE] = 'strong';
                 break;
             default:
                 break;
@@ -116,9 +114,7 @@ export class Enemy {
     }
 
     public update(): void {
-
         if (this.teleporting) {
-
             this.t++;
 
             if (this.t === 8) {
@@ -131,12 +127,10 @@ export class Enemy {
 
         // if on top of glue, make it slower
         if (this.affectedByGlue) {
-
             speed = MathUtils.fixNumber(this.speed / this.glueIntensity);
         }
 
         if (this.affectedByGlueBullet) {
-
             speed = MathUtils.fixNumber(this.speed / this.glueBulletIntensity);
 
             this.glueTicksCounter++;
@@ -152,14 +146,15 @@ export class Enemy {
         this.prevY = this.y;
 
         if (this.l >= this.engine.enemiesPathCells.length - 1) {
-
-            this.x = this.engine.enemiesPathCells[this.engine.enemiesPathCells.length - 1].c;
-            this.y = this.engine.enemiesPathCells[this.engine.enemiesPathCells.length - 1].r;
+            this.x = this.engine.enemiesPathCells[
+                this.engine.enemiesPathCells.length - 1
+            ].c;
+            this.y = this.engine.enemiesPathCells[
+                this.engine.enemiesPathCells.length - 1
+            ].r;
 
             this.engine.onEnemyReachedExit(this);
-
         } else {
-
             const p = this.engine.getPathPosition(this.l);
 
             this.x = p.x;
@@ -168,7 +163,6 @@ export class Enemy {
     }
 
     public teleport(teleportDistance: number): void {
-
         this.hasBeenTeleported = true;
         this.teleporting = true;
         this.t = 0;
@@ -185,8 +179,10 @@ export class Enemy {
         this.y = p.y;
     }
 
-    public hitByGlueBullet(glueBulletIntensity: number, glueBulletsDurationTicks: number): void {
-
+    public hitByGlueBullet(
+        glueBulletIntensity: number,
+        glueBulletsDurationTicks: number
+    ): void {
         this.glueTicksCounter = 0;
         this.affectedByGlueBullet = true;
         this.glueBulletIntensity = glueBulletIntensity;
@@ -194,13 +190,17 @@ export class Enemy {
     }
 
     public glue(glueIntensity: number): void {
-
         this.affectedByGlue = true;
         this.glueIntensity = glueIntensity;
     }
 
-    public hit(damage: number, bullet?: Bullet, mortar?: Mortar, mine?: Mine, laserTurret?: LaserTurret): void {
-
+    public hit(
+        damage: number,
+        bullet?: Bullet,
+        mortar?: Mortar,
+        mine?: Mine,
+        laserTurret?: LaserTurret
+    ): void {
         if (this.life <= 0) {
             return;
         }
@@ -208,21 +208,27 @@ export class Enemy {
         let modifier = 1;
 
         if (bullet) {
-            if (this.modifiers[GameConstants.TURRET_PROJECTILE] === "weak") {
+            if (this.modifiers[GameConstants.TURRET_PROJECTILE] === 'weak') {
                 modifier = GameConstants.WEAK_AGAINST_DAMAGE_MODIFIER;
-            } else if (this.modifiers[GameConstants.TURRET_PROJECTILE] === "strong") {
+            } else if (
+                this.modifiers[GameConstants.TURRET_PROJECTILE] === 'strong'
+            ) {
                 modifier = GameConstants.STRONG_AGAINST_DAMAGE_MODIFIER;
             }
         } else if (mortar || mine) {
-            if (this.modifiers[GameConstants.TURRET_LAUNCH] === "weak") {
+            if (this.modifiers[GameConstants.TURRET_LAUNCH] === 'weak') {
                 modifier = GameConstants.WEAK_AGAINST_DAMAGE_MODIFIER;
-            } else if (this.modifiers[GameConstants.TURRET_LAUNCH] === "strong") {
+            } else if (
+                this.modifiers[GameConstants.TURRET_LAUNCH] === 'strong'
+            ) {
                 modifier = GameConstants.STRONG_AGAINST_DAMAGE_MODIFIER;
             }
         } else if (laserTurret) {
-            if (this.modifiers[GameConstants.TURRET_LASER] === "weak") {
+            if (this.modifiers[GameConstants.TURRET_LASER] === 'weak') {
                 modifier = GameConstants.WEAK_AGAINST_DAMAGE_MODIFIER;
-            } else if (this.modifiers[GameConstants.TURRET_LASER] === "strong") {
+            } else if (
+                this.modifiers[GameConstants.TURRET_LASER] === 'strong'
+            ) {
                 modifier = GameConstants.STRONG_AGAINST_DAMAGE_MODIFIER;
             }
         }
@@ -246,7 +252,6 @@ export class Enemy {
     }
 
     public restoreHealth(): void {
-
         this.life += MathUtils.fixNumber(this.maxLife / 20);
 
         if (this.life > this.maxLife) {
@@ -255,7 +260,6 @@ export class Enemy {
     }
 
     public getNextPosition(deltaTicks: number): { x: number; y: number } {
-
         let speed = this.speed;
 
         if (this.affectedByGlue) {

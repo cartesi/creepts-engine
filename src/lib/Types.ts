@@ -1,17 +1,16 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
-import { Turret } from "./turrets/Turret";
+import { Turret } from './turrets/Turret';
 
 export type Callback = {
     func: Function;
@@ -37,7 +36,7 @@ export type GameConfig = {
 };
 
 export type WaveConfig = {
-    enemies: { "type": string; "t": number }[];
+    enemies: { type: string; t: number }[];
 };
 
 export type EngineReturn = {
@@ -54,24 +53,24 @@ export type Action = {
     position?: { r: number; c: number };
 };
 
-export type EnemyNames = "soldier" | "runner" | "healer" | "blob" | "flier";
+export type EnemyNames = 'soldier' | 'runner' | 'healer' | 'blob' | 'flier';
 export type EnemyAttributes = {
     life: number;
     speed: number;
     value: number;
 };
 
-export type TurretNames = "projectile" | "laser" | "launch" | "glue";
+export type TurretNames = 'projectile' | 'laser' | 'launch' | 'glue';
 export type TurretAttributes = {
     price: number;
-}
+};
 
 export type WaveAttributes = {
     waveReward: number;
     extend: number;
     maxExtend: number;
     enemies: { type: string; t: number }[];
-}
+};
 
 export type LevelObject = {
     engineVersion: string;

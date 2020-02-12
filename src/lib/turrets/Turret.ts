@@ -1,24 +1,22 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
-import { GameConstants } from "../GameConstants";
-import { MathUtils } from "../utils/MathUtils";
-import { Engine } from "../Engine";
-import { Enemy } from "../enemies/Enemy";
+import { GameConstants } from '../GameConstants';
+import { MathUtils } from '../utils/MathUtils';
+import { Engine } from '../Engine';
+import { Enemy } from '../enemies/Enemy';
 
 export class Turret {
-
-    public static readonly DOWNGRADE_PERCENT = .97;
+    public static readonly DOWNGRADE_PERCENT = 0.97;
 
     public id: number;
     public creationTick: number;
@@ -52,7 +50,6 @@ export class Turret {
     protected engine: Engine;
 
     constructor(type: string, p: { r: number; c: number }, engine: Engine) {
-
         this.engine = engine;
 
         this.id = engine.turretId;
@@ -69,16 +66,19 @@ export class Turret {
         this.position = p;
         this.fixedTarget = true;
         this.shootingStrategyIndex = 0;
-        this.shootingStrategy = GameConstants.STRATEGIES_ARRAY[this.shootingStrategyIndex];
+        this.shootingStrategy =
+            GameConstants.STRATEGIES_ARRAY[this.shootingStrategyIndex];
         this.readyToShoot = true;
         this.enemiesWithinRange = [];
         this.followedEnemy = undefined;
 
-        this.x = this.position.c + .5;
-        this.y = this.position.r + .5;
+        this.x = this.position.c + 0.5;
+        this.y = this.position.r + 0.5;
 
         this.value = this.engine.turretData[this.type].price;
-        this.sellValue = Math.round(this.engine.turretData[this.type].price * Turret.DOWNGRADE_PERCENT);
+        this.sellValue = Math.round(
+            this.engine.turretData[this.type].price * Turret.DOWNGRADE_PERCENT
+        );
     }
 
     public destroy(): void {
@@ -86,14 +86,15 @@ export class Turret {
     }
 
     public update(): void {
-
         if (this.readyToShoot) {
-
             this.enemiesWithinRange = this.getEnemiesWithinRange();
 
             if (this.fixedTarget) {
                 if (this.enemiesWithinRange.length > 0) {
-                    if (this.enemiesWithinRange.indexOf(this.followedEnemy) === -1) {
+                    if (
+                        this.enemiesWithinRange.indexOf(this.followedEnemy) ===
+                        -1
+                    ) {
                         this.followedEnemy = this.enemiesWithinRange[0];
                     }
                 } else {
@@ -107,9 +108,7 @@ export class Turret {
                 this.readyToShoot = false;
                 this.shoot();
             }
-
         } else {
-
             this.f++;
 
             if (this.f >= this.reloadTicks) {
@@ -120,12 +119,10 @@ export class Turret {
     }
 
     public ageTurret(): void {
-
         this.sellValue = Math.round(this.sellValue * Turret.DOWNGRADE_PERCENT);
     }
 
     public improve(): void {
-
         this.value += this.priceImprovement;
         this.sellValue += this.priceImprovement;
 
@@ -134,7 +131,6 @@ export class Turret {
     }
 
     public upgrade(): void {
-
         this.value += this.priceUpgrade;
         this.sellValue += this.priceUpgrade;
 
@@ -151,19 +147,23 @@ export class Turret {
     }
 
     public setNextStrategy(): void {
-
-        this.shootingStrategyIndex = this.shootingStrategyIndex === GameConstants.STRATEGIES_ARRAY.length - 1 ? 0 : this.shootingStrategyIndex + 1;
-        this.shootingStrategy = GameConstants.STRATEGIES_ARRAY[this.shootingStrategyIndex];
+        this.shootingStrategyIndex =
+            this.shootingStrategyIndex ===
+            GameConstants.STRATEGIES_ARRAY.length - 1
+                ? 0
+                : this.shootingStrategyIndex + 1;
+        this.shootingStrategy =
+            GameConstants.STRATEGIES_ARRAY[this.shootingStrategyIndex];
     }
 
     public setFixedTarget(): void {
-
         this.fixedTarget = !this.fixedTarget;
     }
 
     protected calculateTurretParameters(): void {
-
-        this.reloadTicks = Math.floor(GameConstants.RELOAD_BASE_TICKS * this.reload);
+        this.reloadTicks = Math.floor(
+            GameConstants.RELOAD_BASE_TICKS * this.reload
+        );
         this.squaredRange = MathUtils.fixNumber(this.range * this.range);
     }
 
@@ -172,37 +172,48 @@ export class Turret {
     }
 
     public getEnemiesWithinRange(): Enemy[] {
-
-        const enemiesAndSquaredDistances: { enemy: Enemy; squareDist: number }[] = [];
+        const enemiesAndSquaredDistances: {
+            enemy: Enemy;
+            squareDist: number;
+        }[] = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
-
             const enemy = this.engine.enemies[i];
 
-            if (this.type === GameConstants.TURRET_GLUE && this.grade === 3 && enemy.hasBeenTeleported) {
+            if (
+                this.type === GameConstants.TURRET_GLUE &&
+                this.grade === 3 &&
+                enemy.hasBeenTeleported
+            ) {
                 continue;
             }
 
-            if (enemy.life > 0 && enemy.l < this.engine.enemiesPathCells.length - 1.5 && !enemy.teleporting) {
-
+            if (
+                enemy.life > 0 &&
+                enemy.l < this.engine.enemiesPathCells.length - 1.5 &&
+                !enemy.teleporting
+            ) {
                 const dx = this.x - enemy.x;
                 const dy = this.y - enemy.y;
 
                 const squaredDist = MathUtils.fixNumber(dx * dx + dy * dy);
 
                 if (this.squaredRange >= squaredDist) {
-                    enemiesAndSquaredDistances.push({ enemy: enemy, squareDist: squaredDist });
+                    enemiesAndSquaredDistances.push({
+                        enemy: enemy,
+                        squareDist: squaredDist
+                    });
                 }
             }
         }
 
         if (enemiesAndSquaredDistances.length > 1) {
-
             switch (this.shootingStrategy) {
-
                 case GameConstants.STRATEGY_SHOOT_FIRST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
-
+                    enemiesAndSquaredDistances.sort(function(
+                        e1: { enemy: Enemy; squareDist: number },
+                        e2: { enemy: Enemy; squareDist: number }
+                    ): number {
                         if (e1.enemy.l === e2.enemy.l) {
                             return e1.enemy.id - e2.enemy.id;
                         } else {
@@ -212,8 +223,10 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_LAST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
-
+                    enemiesAndSquaredDistances.sort(function(
+                        e1: { enemy: Enemy; squareDist: number },
+                        e2: { enemy: Enemy; squareDist: number }
+                    ): number {
                         if (e1.enemy.l === e2.enemy.l) {
                             return e1.enemy.id - e2.enemy.id;
                         } else {
@@ -223,8 +236,10 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_CLOSEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
-
+                    enemiesAndSquaredDistances.sort(function(
+                        e1: { enemy: Enemy; squareDist: number },
+                        e2: { enemy: Enemy; squareDist: number }
+                    ): number {
                         if (e1.squareDist === e2.squareDist) {
                             if (e1.enemy.l === e2.enemy.l) {
                                 return e1.enemy.id - e2.enemy.id;
@@ -239,8 +254,10 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_WEAKEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
-
+                    enemiesAndSquaredDistances.sort(function(
+                        e1: { enemy: Enemy; squareDist: number },
+                        e2: { enemy: Enemy; squareDist: number }
+                    ): number {
                         if (e1.enemy.life === e2.enemy.life) {
                             if (e1.enemy.l === e2.enemy.l) {
                                 return e1.enemy.id - e2.enemy.id;
@@ -255,8 +272,10 @@ export class Turret {
                     break;
 
                 case GameConstants.STRATEGY_SHOOT_STRONGEST:
-                    enemiesAndSquaredDistances.sort(function (e1: { enemy: Enemy; squareDist: number }, e2: { enemy: Enemy; squareDist: number }): number {
-
+                    enemiesAndSquaredDistances.sort(function(
+                        e1: { enemy: Enemy; squareDist: number },
+                        e2: { enemy: Enemy; squareDist: number }
+                    ): number {
                         if (e1.enemy.life === e2.enemy.life) {
                             if (e1.enemy.l === e2.enemy.l) {
                                 return e1.enemy.id - e2.enemy.id;

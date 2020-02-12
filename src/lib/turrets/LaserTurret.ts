@@ -1,40 +1,38 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
-import { GameConstants } from "../GameConstants";
-import { MathUtils } from "../utils/MathUtils";
-import { Engine } from "../Engine";
-import { Enemy } from "../enemies/Enemy";
-import { Turret } from "./Turret";
+import { GameConstants } from '../GameConstants';
+import { MathUtils } from '../utils/MathUtils';
+import { Engine } from '../Engine';
+import { Enemy } from '../enemies/Enemy';
+import { Turret } from './Turret';
 
 export class LaserTurret extends Turret {
-
     constructor(p: { r: number; c: number }, engine: Engine) {
-
         super(GameConstants.TURRET_LASER, p, engine);
 
         this.calculateTurretParameters();
     }
 
-
     protected calculateTurretParameters(): void {
-
-        const turretDataAtributes = this.engine.turretsAttributes[this.type][this.grade - 1];
+        const turretDataAtributes = this.engine.turretsAttributes[this.type][
+            this.grade - 1
+        ];
 
         this.damage = turretDataAtributes.damage[this.level - 1];
         this.reload = turretDataAtributes.reload[this.level - 1];
         this.range = turretDataAtributes.range[this.level - 1];
-        this.priceImprovement = turretDataAtributes.priceImprovement[this.level - 1];
+        this.priceImprovement =
+            turretDataAtributes.priceImprovement[this.level - 1];
 
         if (this.grade < 3) {
             this.priceUpgrade = turretDataAtributes.priceUpgrade;
@@ -44,17 +42,23 @@ export class LaserTurret extends Turret {
     }
 
     protected getEnemiesWithinLine(enemy: Enemy): Enemy[] {
-
         const newEnemies = [];
 
         for (let i = 0; i < this.engine.enemies.length; i++) {
-
             const newEnemy = this.engine.enemies[i];
 
             const infiniteX = newEnemy.x + (enemy.x - this.x) * 1000;
             const infiniteY = newEnemy.y + (enemy.y - this.y) * 1000;
 
-            if (newEnemy !== enemy && MathUtils.isLineSegmentIntersectingCircle({ x: this.x, y: this.y }, { x: infiniteX, y: infiniteY }, { x: newEnemy.x, y: newEnemy.y }, .3)) {
+            if (
+                newEnemy !== enemy &&
+                MathUtils.isLineSegmentIntersectingCircle(
+                    { x: this.x, y: this.y },
+                    { x: infiniteX, y: infiniteY },
+                    { x: newEnemy.x, y: newEnemy.y },
+                    0.3
+                )
+            ) {
                 newEnemies.push(newEnemy);
             }
         }
@@ -63,7 +67,6 @@ export class LaserTurret extends Turret {
     }
 
     protected shoot(): void {
-
         super.shoot();
 
         let enemies: Enemy[] = [];
@@ -83,7 +86,6 @@ export class LaserTurret extends Turret {
         }
 
         if (this.grade === 3) {
-
             if (this.fixedTarget) {
                 enemies.push(this.followedEnemy || this.enemiesWithinRange[0]);
             } else {
@@ -91,7 +93,6 @@ export class LaserTurret extends Turret {
             }
 
             enemies = enemies.concat(this.getEnemiesWithinLine(enemies[0]));
-
         } else {
             if (this.fixedTarget) {
                 if (this.followedEnemy) {
@@ -109,7 +110,6 @@ export class LaserTurret extends Turret {
             }
 
             while (enemies.length < enemiesNumber) {
-
                 if (this.enemiesWithinRange[enemiesCounter]) {
                     enemies.push(this.enemiesWithinRange[enemiesCounter]);
                     enemiesCounter++;

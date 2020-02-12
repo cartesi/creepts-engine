@@ -7,7 +7,7 @@
   "module": "build/module/index.js",
   "repository": "https://github.com/cartesi/creepts-engine",
   "license": "Apache-2.0",
-  "keywords": [],
+  "keywords": ["cartesi", "creepts"],
   "scripts": {
     "describe": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
@@ -15,9 +15,9 @@
     "build:module": "tsc -p tsconfig.module.json",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:tslint": "eslint --fix --project .",
+    "fix:tslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "run-s build test:*",
-    "test:lint": "eslint --project . && prettier \"src/**/*.ts\" --list-different",
+    "test:lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier \"src/**/*.ts\" --list-different",
     "test:unit": "nyc --silent ava",
     "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
     "cov": "run-s build test:unit cov:html && open-cli coverage/index.html",
@@ -86,7 +86,8 @@
     }
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "tabWidth": 4
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",

@@ -1,68 +1,68 @@
 // Copyright 2020 Cartesi Pte. Ltd.
 
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-// use this file except in compliance with the License. You may obtain a copy 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
 // of the license at http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
-// License for the specific language governing permissions and limitations 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
 // under the License.
 
-
 export class GameConstants {
-
     // version: v0.month.day.hour
-    public static readonly VERSION = "v0.9.30.11";
+    public static readonly VERSION = 'v0.9.30.11';
 
     public static readonly RELOAD_BASE_TICKS = 10;
-    public static readonly BULLET_SPEED = .85; // in cells / tick
-    public static readonly MORTAR_SPEED = .45;
+    public static readonly BULLET_SPEED = 0.85; // in cells / tick
+    public static readonly MORTAR_SPEED = 0.45;
     public static readonly INITIAL_TICKS_WAVE = 4;
     public static readonly ENEMY_SPAWNING_DELTA_TICKS = 10;
     public static readonly INITIAL_CREDITS = 500;
     public static readonly INITIAL_LIFES = 20;
 
     // enemies names
-    public static readonly ENEMY_SOLDIER = "soldier";
-    public static readonly ENEMY_RUNNER = "runner";
-    public static readonly ENEMY_HEALER = "healer";
-    public static readonly ENEMY_BLOB = "blob";
-    public static readonly ENEMY_FLIER = "flier";
+    public static readonly ENEMY_SOLDIER = 'soldier';
+    public static readonly ENEMY_RUNNER = 'runner';
+    public static readonly ENEMY_HEALER = 'healer';
+    public static readonly ENEMY_BLOB = 'blob';
+    public static readonly ENEMY_FLIER = 'flier';
 
     // turrets names
-    public static readonly TURRET_PROJECTILE = "projectile";
-    public static readonly TURRET_LASER = "laser";
-    public static readonly TURRET_LAUNCH = "launch";
-    public static readonly TURRET_GLUE = "glue";
+    public static readonly TURRET_PROJECTILE = 'projectile';
+    public static readonly TURRET_LASER = 'laser';
+    public static readonly TURRET_LAUNCH = 'launch';
+    public static readonly TURRET_GLUE = 'glue';
 
     // turret attributes
-    public static readonly ATTRIBUTE_DAMAGE = "damage";
-    public static readonly ATTRIBUTE_RELOAD = "reload";
-    public static readonly ATTRIBUTE_RANGE = "range";
-    public static readonly ATTRIBUTE_EXPLOSION_RANGE = "explosionRange";
-    public static readonly ATTRIBUTE_INTENSITY = "intensity";
-    public static readonly ATTRIBUTE_DURATION = "duration";
-    public static readonly ATTRIBUTE_PRICE_IMPROVEMENT = "priceImprovement";
-    public static readonly ATTRIBUTE_PRICE_UPGRADE = "priceUpgrade";
-    public static readonly ATTRIBUTE_TELEPORT_DISTANCE = "teleportDistance";
+    public static readonly ATTRIBUTE_DAMAGE = 'damage';
+    public static readonly ATTRIBUTE_RELOAD = 'reload';
+    public static readonly ATTRIBUTE_RANGE = 'range';
+    public static readonly ATTRIBUTE_EXPLOSION_RANGE = 'explosionRange';
+    public static readonly ATTRIBUTE_INTENSITY = 'intensity';
+    public static readonly ATTRIBUTE_DURATION = 'duration';
+    public static readonly ATTRIBUTE_PRICE_IMPROVEMENT = 'priceImprovement';
+    public static readonly ATTRIBUTE_PRICE_UPGRADE = 'priceUpgrade';
+    public static readonly ATTRIBUTE_TELEPORT_DISTANCE = 'teleportDistance';
 
     // action types
-    public static readonly ACTION_TYPE_NEXT_WAVE = "next wave";
-    public static readonly ACTION_TYPE_ADD_TURRET = "add turret";
-    public static readonly ACTION_TYPE_SELL_TURRET = "sell turret";
-    public static readonly ACTION_TYPE_UPGRADE_TURRET = "upgrade turret";
-    public static readonly ACTION_TYPE_LEVEL_UP_TURRET = "level up turret";
-    public static readonly ACTION_TYPE_CHANGE_STRATEGY_TURRET = "change strategy turret";
-    public static readonly ACTION_TYPE_CHANGE_FIXED_TARGET_TURRET = "change fixed target turret";
+    public static readonly ACTION_TYPE_NEXT_WAVE = 'next wave';
+    public static readonly ACTION_TYPE_ADD_TURRET = 'add turret';
+    public static readonly ACTION_TYPE_SELL_TURRET = 'sell turret';
+    public static readonly ACTION_TYPE_UPGRADE_TURRET = 'upgrade turret';
+    public static readonly ACTION_TYPE_LEVEL_UP_TURRET = 'level up turret';
+    public static readonly ACTION_TYPE_CHANGE_STRATEGY_TURRET =
+        'change strategy turret';
+    public static readonly ACTION_TYPE_CHANGE_FIXED_TARGET_TURRET =
+        'change fixed target turret';
 
     // shooting strategy
-    public static readonly STRATEGY_SHOOT_FIRST = "first";
-    public static readonly STRATEGY_SHOOT_LAST = "last";
-    public static readonly STRATEGY_SHOOT_CLOSEST = "closest";
-    public static readonly STRATEGY_SHOOT_WEAKEST = "weakest";
-    public static readonly STRATEGY_SHOOT_STRONGEST = "strongest";
+    public static readonly STRATEGY_SHOOT_FIRST = 'first';
+    public static readonly STRATEGY_SHOOT_LAST = 'last';
+    public static readonly STRATEGY_SHOOT_CLOSEST = 'closest';
+    public static readonly STRATEGY_SHOOT_WEAKEST = 'weakest';
+    public static readonly STRATEGY_SHOOT_STRONGEST = 'strongest';
 
     public static readonly STRATEGIES_ARRAY = [
         GameConstants.STRATEGY_SHOOT_FIRST,
@@ -91,17 +91,17 @@ export class GameConstants {
     public static readonly STRONG_AGAINST_DAMAGE_MODIFIER = 0.33;
 
     // error types
-    public static readonly ERROR_VERSION_MISMATCH = "E001";
-    public static readonly ERROR_NO_GAME_OVER = "E002";
-    public static readonly ERROR_TICKS = "E003";
-    public static readonly ERROR_ACTION_ARRAY = "E004";
-    public static readonly ERROR_ACTION_TYPE = "E005";
-    public static readonly ERROR_ACTION_VALUE = "E006";
-    public static readonly ERROR_TURRET = "E007";
-    public static readonly ERROR_CREDITS = "E008";
-    public static readonly ERROR_NEXT_WAVE = "E009";
-    public static readonly ERROR_ADD_TURRET_POSITION = "E010";
-    public static readonly ERROR_ADD_TURRET_NAME = "E011";
-    public static readonly ERROR_UPGRADE = "E012";
-    public static readonly ERROR_LEVEL_UP = "E013";
+    public static readonly ERROR_VERSION_MISMATCH = 'E001';
+    public static readonly ERROR_NO_GAME_OVER = 'E002';
+    public static readonly ERROR_TICKS = 'E003';
+    public static readonly ERROR_ACTION_ARRAY = 'E004';
+    public static readonly ERROR_ACTION_TYPE = 'E005';
+    public static readonly ERROR_ACTION_VALUE = 'E006';
+    public static readonly ERROR_TURRET = 'E007';
+    public static readonly ERROR_CREDITS = 'E008';
+    public static readonly ERROR_NEXT_WAVE = 'E009';
+    public static readonly ERROR_ADD_TURRET_POSITION = 'E010';
+    public static readonly ERROR_ADD_TURRET_NAME = 'E011';
+    public static readonly ERROR_UPGRADE = 'E012';
+    public static readonly ERROR_LEVEL_UP = 'E013';
 }
