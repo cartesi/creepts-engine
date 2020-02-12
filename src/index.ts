@@ -13,14 +13,18 @@
 
 // import * as Types from "./lib/Types";
 // export { Types };
-// export * from "./lib/enemies";
-// export * from "./lib/turrets";
-// export * from "./lib/events";
+export * from "./lib/enemies";
+export * from "./lib/turrets";
+export * from "./lib/events";
 export {
     EnemyAttributes,
+    EnemyNames,
+    GameConfig,
     LevelObject,
+    LogsObject,
     MapObject,
     TurretAttributes,
+    TurretNames,
     WaveAttributes
 } from "./lib/Types";
 

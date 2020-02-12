@@ -84,10 +84,3 @@ export type LevelObject = {
 export type LogsObject = {
     actions: Action[];
 };
-
-export type GameData = {
-    soundMuted: boolean;
-    musicMuted: boolean;
-    scores: number[];
-    currentMapIndex: number;
-};
