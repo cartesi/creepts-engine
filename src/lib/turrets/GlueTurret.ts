@@ -70,7 +70,7 @@ export class GlueTurret extends Turret {
         let enemy: Enemy;
 
         switch (this.grade) {
-            case 1:
+            case 1: {
                 this.engine.addGlue(
                     new Glue(
                         this.position,
@@ -82,8 +82,9 @@ export class GlueTurret extends Turret {
                     this
                 );
                 break;
+            }
 
-            case 2:
+            case 2: {
                 if (this.fixedTarget) {
                     enemy = this.followedEnemy || this.enemiesWithinRange[0];
                 } else {
@@ -122,8 +123,9 @@ export class GlueTurret extends Turret {
                 this.engine.addGlueBullet(bullet, this);
 
                 break;
+            }
 
-            case 3:
+            case 3: {
                 if (this.fixedTarget) {
                     enemy = this.followedEnemy || this.enemiesWithinRange[0];
                 } else {
@@ -133,6 +135,7 @@ export class GlueTurret extends Turret {
                 this.engine.flagEnemyToTeleport(enemy, this);
 
                 break;
+            }
 
             default:
         }

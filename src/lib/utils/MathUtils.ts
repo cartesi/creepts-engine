@@ -112,9 +112,12 @@ export class MathUtils {
         }
     }
 
-    public static mergeSort(list: any[], compareFunction?: Function): any[] {
+    public static mergeSort<T>(
+        list: T[],
+        compareFunction?: (a: T, b: T) => boolean
+    ): T[] {
         if (!compareFunction) {
-            compareFunction = function(x: number, y: number): boolean {
+            compareFunction = function(x: T, y: T): boolean {
                 return x < y;
             };
         }
@@ -134,9 +137,7 @@ export class MathUtils {
         );
     }
 
-    private static splitList(
-        list: any[]
-    ): { leftHalf: any[]; rigthHalf: any[] } {
+    private static splitList<T>(list: T[]): { leftHalf: T[]; rigthHalf: T[] } {
         if (list.length === 0) {
             return { leftHalf: [], rigthHalf: [] };
         }
@@ -150,27 +151,23 @@ export class MathUtils {
         return { leftHalf: list.slice(0, index), rigthHalf: list.slice(index) };
     }
 
-    private static jointLists(
-        list1: any[],
-        list2: any[],
-        compareFunction: Function
-    ): any[] {
+    private static jointLists<T>(
+        list1: T[],
+        list2: T[],
+        compareFunction: (a: T, b: T) => boolean
+    ): T[] {
         const result = [];
 
         let index1 = 0;
         let index2 = 0;
 
-        while (true) {
+        while (index1 !== list1.length && index2 !== list2.length) {
             if (compareFunction(list1[index1], list2[index2])) {
                 result.push(list1[index1]);
                 index1++;
             } else {
                 result.push(list2[index2]);
                 index2++;
-            }
-
-            if (index1 === list1.length || index2 === list2.length) {
-                break;
             }
         }
 

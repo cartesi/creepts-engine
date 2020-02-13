@@ -15,7 +15,7 @@
     "build:module": "tsc -p tsconfig.module.json",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:tslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "fix:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "run-s build test:*",
     "test:lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier \"src/**/*.ts\" --list-different",
     "test:unit": "nyc --silent ava",

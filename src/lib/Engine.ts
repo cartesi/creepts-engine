@@ -38,7 +38,7 @@ export class Engine {
     public turretData: Record<string, Types.TurretAttributes>;
     public turretsAttributes: any;
     public wavesData: Types.WaveAttributes[];
-    public waveEnemies: any;
+    public waveEnemies: { type: string; t: number }[];
     public waveReward: number;
     public remainingReward: number;
     public enemies: Enemy[];
@@ -305,12 +305,15 @@ export class Engine {
         }
 
         this.waveEnemies = this.waveEnemies.concat(newWaveEnemies);
-        this.waveEnemies = MathUtils.mergeSort(this.waveEnemies, function(
-            e1: any,
-            e2: any
-        ): boolean {
-            return e1.t - e2.t < 0;
-        });
+        this.waveEnemies = MathUtils.mergeSort<{ type: string; t: number }>(
+            this.waveEnemies,
+            function(
+                e1: { type: string; t: number },
+                e2: { type: string; t: number }
+            ): boolean {
+                return e1.t - e2.t < 0;
+            }
+        );
 
         this.lastWaveTick = this._ticksCounter;
 
