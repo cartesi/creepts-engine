@@ -7,7 +7,10 @@
   "module": "build/module/index.js",
   "repository": "https://github.com/cartesi/creepts-engine",
   "license": "Apache-2.0",
-  "keywords": ["cartesi", "creepts"],
+  "keywords": [
+    "cartesi",
+    "creepts"
+  ],
   "scripts": {
     "info": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
@@ -58,7 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "ava": "2.2.0",
-    "codecov": "^3.5.0",
+    "codecov": "^3.6.5",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
