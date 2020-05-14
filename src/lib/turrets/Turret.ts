@@ -16,7 +16,7 @@ import { Engine } from '../Engine';
 import { Enemy } from '../enemies/Enemy';
 
 export class Turret {
-    public static readonly DOWNGRADE_PERCENT = 0.97;
+    public static readonly DOWNGRADE_PERCENT = 0.8;
 
     public id: number;
     public creationTick: number;
@@ -68,7 +68,7 @@ export class Turret {
         this.shootingStrategyIndex = 0;
         this.shootingStrategy =
             GameConstants.STRATEGIES_ARRAY[this.shootingStrategyIndex];
-        this.readyToShoot = true;
+        this.readyToShoot = false;
         this.enemiesWithinRange = [];
         this.followedEnemy = undefined;
 
@@ -119,12 +119,12 @@ export class Turret {
     }
 
     public ageTurret(): void {
-        this.sellValue = Math.round(this.sellValue * Turret.DOWNGRADE_PERCENT);
+        this.sellValue = Math.max(Math.round(this.sellValue * Turret.DOWNGRADE_PERCENT), Math.round(this.value * .5));
     }
 
     public improve(): void {
         this.value += this.priceImprovement;
-        this.sellValue += this.priceImprovement;
+        this.sellValue += Math.round(this.priceImprovement * Turret.DOWNGRADE_PERCENT);
 
         this.level++;
         this.calculateTurretParameters();
@@ -132,7 +132,7 @@ export class Turret {
 
     public upgrade(): void {
         this.value += this.priceUpgrade;
-        this.sellValue += this.priceUpgrade;
+        this.sellValue += Math.round(this.priceUpgrade * Turret.DOWNGRADE_PERCENT);
 
         this.grade++;
         this.level = 1;

@@ -197,7 +197,6 @@ export class Engine {
             this.mortars.length === 0
         ) {
             this.waveActivated = false;
-            this.ageTurrets();
 
             if (this._lifes > 0) {
                 this.eventDispatcher.dispatchEvent(new Event(Event.WAVE_OVER));
@@ -260,6 +259,8 @@ export class Engine {
         if (!this.canLaunchNextWave) {
             return false;
         }
+
+        this.ageTurrets();
 
         this._credits += this._bonus;
         this._creditsEarned += this._bonus;
